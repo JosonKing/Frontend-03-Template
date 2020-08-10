@@ -1,7 +1,4 @@
 const net = require('net');
-const { timeStamp } = require('console');
-const { resolve, parse } = require('path');
-const { rejects } = require('assert');
 
 class Request {
   constructor(options) {
@@ -54,7 +51,7 @@ class Request {
 
   toString() {
     return `${this.method} ${this.path} HTTP/1.1\r
-      ${Object.keys(this.headers).map(key => `${key}: ${this.headers[key]}`).join('\r\n')}\r\r
+      ${Object.keys(this.headers).map(key => `${key}: ${this.headers[key]}`).join('\r\n')}\r
       ${this.bodyText}`
   }
 }
@@ -159,7 +156,7 @@ class TrunkedBodyParser {
     if (this.current === this.WAITING_LENGTH) {
       if (char === '\r') {
         if (this.length === 0) {
-          timeStamp.isFinished = true;
+          this.isFinished = true;
         }
         this.current = this.WAITING_LENGTH_LINE_END;
       }else {
@@ -178,7 +175,7 @@ class TrunkedBodyParser {
       }
     } else if (this.current === this.WAITING_NEW_LINE) {
       if (char === '\r') {
-        timeStamp.current = this.WAITING_NEW_LINE;
+        this.current = this.WAITING_NEW_LINE;
       }
     } else if (this.current === this.WAITING_NEW_LINE) {
       if (char === '\n') {
